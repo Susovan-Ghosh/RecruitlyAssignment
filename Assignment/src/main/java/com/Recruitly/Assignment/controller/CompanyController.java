@@ -5,6 +5,7 @@ import com.Recruitly.Assignment.service.utility.CompanyUtility;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class CompanyController {
 
     // uri : http://localhost:8080/company/get
     @ApiOperation("This API will fetch all company documents from CompanyDatabase's company collection.")
-    @GetMapping("/company/get")
+    @GetMapping({"/company/get", "/index"})
     public List<Company> getCompanies() {
         return companyUtility.getCompanies();
     }
