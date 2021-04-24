@@ -1,7 +1,8 @@
 package com.Recruitly.Assignment.controller;
 
 import com.Recruitly.Assignment.model.Company;
-import com.Recruitly.Assignment.service.CompanyRepository;
+import com.Recruitly.Assignment.service.utility.CompanyUtility;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,34 +11,34 @@ import java.util.List;
 @RestController
 public class CompanyController {
     @Autowired
-    private CompanyRepository companyRepository;
+    private CompanyUtility companyUtility;
 
+    // uri : http://localhost:8080/company/add
+    @ApiOperation("This API will create a company document in CompanyDatabase's company collection.")
     @PostMapping("/company/add")
     public String saveCompany(@RequestBody Company company) {
-        companyRepository.save(company);
-        return "Company (id = " + company.getId() + ") added.";
+        return companyUtility.saveCompany(company);
     }
 
+    // uri : http://localhost:8080/company/get
+    @ApiOperation("This API will fetch all company documents from CompanyDatabase's company collection.")
     @GetMapping("/company/get")
     public List<Company> getCompanies() {
-        return companyRepository.findAll();
+        return companyUtility.getCompanies();
     }
 
+    // uri : http://localhost:8080/company/delete/{id}
+    @ApiOperation("This API will delete a company document by id from CompanyDatabase's company collection.")
     @DeleteMapping("/company/delete/{id}")
     public String deleteCompany(@PathVariable int id) throws Exception {
-        Company isCompanyPresent = companyRepository.findById(id)
-                .orElseThrow(() -> new Exception("Company (id = " + id + ") not found!"));
-        companyRepository.deleteById(id);
-        return "Company (id = " + id + ") deleted.";
+        return companyUtility.deleteCompany(id);
     }
 
+    // uri : http://localhost:8080/company/put/{id}
+    @ApiOperation("This API will update a company document by id from CompanyDatabase's company collection.")
     @PutMapping("/company/put/{id}")
     public String updateCompany(@PathVariable int id, @RequestBody Company company) throws Exception {
-        Company isCompanyPresent = companyRepository.findById(id)
-                .orElseThrow(() -> new Exception("Company (id = " + id + ") not found!"));
-        company.setId(id);
-        companyRepository.save(company);
-        return "Company (id = " + id + ") update.";
+        return companyUtility.updateCompany(id, company);
     }
 
 }
